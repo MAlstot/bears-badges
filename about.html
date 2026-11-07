@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How BEARS badge verification works</title>
+<style>
+  :root{
+    --green:#154734; --gold:#FFB81C; --amber:#8A6A14; --cream:#FAF6EC;
+    --sage:#E7EFE9; --ink:#2B2B2B; --muted:#5F5F5F; --line:#D6D2C8;
+    --bad:#8C2B1E; --badbg:#F8E8E4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:17px;line-height:1.55}
+  header{background:var(--green);color:#fff;border-bottom:6px solid var(--gold)}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+  header .wrap{display:flex;gap:18px;align-items:center;padding-top:22px;padding-bottom:22px}
+  header img{width:72px;height:72px;flex:none}
+  header h1{font-family:Georgia,"Times New Roman",serif;font-size:1.7rem;margin:0;line-height:1.2}
+  header p{margin:4px 0 0;opacity:.9;font-size:.95rem}
+  main{padding:32px 20px 48px}
+  .intro{margin:0 0 24px;color:var(--muted)}
+  label{display:block;font-weight:600;margin:18px 0 6px}
+  .hint{font-weight:400;color:var(--muted);font-size:.9rem}
+  input{width:100%;padding:12px 14px;font-size:1.05rem;border:2px solid var(--line);
+    border-radius:6px;background:#fff;color:var(--ink)}
+  #code{font-family:Consolas,"Courier New",monospace;letter-spacing:.06em;text-transform:uppercase}
+  input:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-color:var(--green)}
+  button{margin-top:22px;background:var(--green);color:#fff;border:0;border-radius:6px;
+    padding:13px 26px;font-size:1.05rem;font-weight:600;cursor:pointer}
+  button:hover{background:#0f3726}
+  button[disabled]{opacity:.6;cursor:wait}
+  #result{margin-top:30px}
+  .card{border-radius:8px;padding:20px 22px;border-left:8px solid}
+  .ok{background:var(--sage);border-color:var(--green)}
+  .no{background:var(--badbg);border-color:var(--bad)}
+  .card h2{margin:0 0 6px;font-family:Georgia,serif;font-size:1.35rem}
+  .ok h2{color:var(--green)} .no h2{color:var(--bad)}
+  .card dl{margin:12px 0 0;display:grid;grid-template-columns:max-content 1fr;gap:4px 14px}
+  .card dt{font-weight:600} .card dd{margin:0}
+  .card p{margin:6px 0 0}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;padding:18px 0 40px}
+  footer a{color:var(--green)}
+  .demo{background:#FBF3DC;border:1px dashed var(--amber);border-radius:6px;padding:10px 14px;font-size:.92rem;margin-bottom:22px}
+  @media (prefers-reduced-motion:no-preference){ .card{animation:show .25s ease-out} }
+  @keyframes show{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  h2.s{font-family:Georgia,serif;color:var(--green);font-size:1.3rem;margin:34px 0 8px}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;margin-top:8px}
+  th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{background:var(--sage)}
+  ol,ul{padding-left:22px} li{margin:6px 0}
+  code{background:#fff;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:.9em}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <img src="images/bears-badge.svg" alt="">
+  <div><h1>How BEARS badge verification works</h1>
+  <p>A one-page overview for Baylor IT (proof of concept)</p></div>
+</div></header>
+<main class="wrap">
+<p class="demo"><strong>Proof of concept.</strong> Every record on this site belongs to a fake student.</p>
+
+<h2 class="s">The goal</h2>
+<p>Students who finish The BEARS AI Basics need a way to show it that a professor can check in seconds and that a student cannot fake with an image editor or an AI tool. The ATL also needs this to run without anyone issuing badges by hand.</p>
+
+<h2 class="s">The approach</h2>
+<p>The badge image is decoration. The proof is a small record file hosted on a site the ATL controls. A copy of a badge image cannot create a record on this site, so it fails the check.</p>
+<p>The records follow the <a href="https://www.imsglobal.org/spec/ob/v2p0/">Open Badges 2.0</a> standard from 1EdTech, using its simplest method, called hosted verification. This is the same standard badge platforms such as Badgr (now Canvas Credentials) issue.</p>
+
+<h2 class="s">What is public and what is not</h2>
+<table>
+<tr><th>File</th><th>What it holds</th></tr>
+<tr><td><code>issuer.json</code></td><td>Who issues the badge: the Academy for Teaching and Learning.</td></tr>
+<tr><td><code>badge.json</code></td><td>What the badge is and what it takes to earn it.</td></tr>
+<tr><td><code>assertions/&lt;code&gt;.json</code></td><td>One file per badge earned: the badge code, the date, and the student's email in scrambled (salted SHA-256 hash) form.</td></tr>
+<tr><td><code>images/baked/&lt;code&gt;.svg</code></td><td>The student's copy of the badge image, with the link to their record built into the file.</td></tr>
+</table>
+<p>Student names, Bear IDs, and grades never appear on the site.</p>
+
+<h2 class="s">How a check works</h2>
+<ol>
+<li>The student shares their badge code and the email they used in the course.</li>
+<li>The checker page looks for a record file with that code. No file means no badge.</li>
+<li>The page scrambles the email the same way the record did and compares the two. A match means this badge was issued to this student.</li>
+<li>If the record is marked revoked, the page says so.</li>
+</ol>
+<p>Anyone can also check a badge with a standard Open Badges verifier, using the record link or the student's badge image.</p>
+
+<h2 class="s">Known limits of this proof of concept</h2>
+<ul>
+<li>It is hosted on a personal GitHub Pages address. The trust a professor places in a badge depends on the address it lives on.</li>
+<li>Badge records are created by running a script by hand, not yet pulled from Canvas.</li>
+<li>Scrambling hides an email from casual viewing. Someone who already knows a student's email could still confirm whether that student earned the badge. Whether that is acceptable is a question for a privacy or FERPA review.</li>
+<li>Badge codes can be seen in the site's file list. A code alone does not pass the check without the matching email.</li>
+</ul>
+
+<h2 class="s">What we would need from IT</h2>
+<ol>
+<li>Hosting on a Baylor-controlled address, such as a Baylor GitHub organization with a baylor.edu subdomain.</li>
+<li>A read-only Canvas API token for the course, stored as a locked secret, so a scheduled job can issue badges each night when students finish.</li>
+<li>Guidance on a privacy and FERPA review of what gets published.</li>
+<li>A shared ATL email address to list on the issuer record.</li>
+</ol>
+</main>
+<footer><div class="wrap"><a href="index.html">Back to the badge checker</a></div></footer>
+</body>
+</html>

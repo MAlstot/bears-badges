@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check a BEARS AI Basics badge</title>
+<style>
+  :root{
+    --green:#154734; --gold:#FFB81C; --amber:#8A6A14; --cream:#FAF6EC;
+    --sage:#E7EFE9; --ink:#2B2B2B; --muted:#5F5F5F; --line:#D6D2C8;
+    --bad:#8C2B1E; --badbg:#F8E8E4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:17px;line-height:1.55}
+  header{background:var(--green);color:#fff;border-bottom:6px solid var(--gold)}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+  header .wrap{display:flex;gap:18px;align-items:center;padding-top:22px;padding-bottom:22px}
+  header img{width:72px;height:72px;flex:none}
+  header h1{font-family:Georgia,"Times New Roman",serif;font-size:1.7rem;margin:0;line-height:1.2}
+  header p{margin:4px 0 0;opacity:.9;font-size:.95rem}
+  main{padding:32px 20px 48px}
+  .intro{margin:0 0 24px;color:var(--muted)}
+  label{display:block;font-weight:600;margin:18px 0 6px}
+  .hint{font-weight:400;color:var(--muted);font-size:.9rem}
+  input{width:100%;padding:12px 14px;font-size:1.05rem;border:2px solid var(--line);
+    border-radius:6px;background:#fff;color:var(--ink)}
+  #code{font-family:Consolas,"Courier New",monospace;letter-spacing:.06em;text-transform:uppercase}
+  input:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-color:var(--green)}
+  button{margin-top:22px;background:var(--green);color:#fff;border:0;border-radius:6px;
+    padding:13px 26px;font-size:1.05rem;font-weight:600;cursor:pointer}
+  button:hover{background:#0f3726}
+  button[disabled]{opacity:.6;cursor:wait}
+  #result{margin-top:30px}
+  .card{border-radius:8px;padding:20px 22px;border-left:8px solid}
+  .ok{background:var(--sage);border-color:var(--green)}
+  .no{background:var(--badbg);border-color:var(--bad)}
+  .card h2{margin:0 0 6px;font-family:Georgia,serif;font-size:1.35rem}
+  .ok h2{color:var(--green)} .no h2{color:var(--bad)}
+  .card dl{margin:12px 0 0;display:grid;grid-template-columns:max-content 1fr;gap:4px 14px}
+  .card dt{font-weight:600} .card dd{margin:0}
+  .card p{margin:6px 0 0}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;padding:18px 0 40px}
+  footer a{color:var(--green)}
+  .demo{background:#FBF3DC;border:1px dashed var(--amber);border-radius:6px;padding:10px 14px;font-size:.92rem;margin-bottom:22px}
+  @media (prefers-reduced-motion:no-preference){ .card{animation:show .25s ease-out} }
+  @keyframes show{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <img src="images/bears-badge.svg" alt="">
+  <div><h1>Check a BEARS AI Basics badge</h1>
+  <p>Academy for Teaching and Learning, Baylor University</p></div>
+</div></header>
+
+<main class="wrap">
+  <p class="demo"><strong>Proof of concept.</strong> This page uses fake students only.</p>
+  <p class="intro">Ask the student for their badge code and the email they used in the course. Both must match for the badge to check out.</p>
+
+  <form id="f" novalidate>
+    <label for="code">Badge code <span class="hint">looks like BEARS-7KQ4-M2XP</span></label>
+    <input id="code" name="code" autocomplete="off" spellcheck="false" required>
+    <label for="email">Student's email</label>
+    <input id="email" name="email" type="email" autocomplete="off" required>
+    <button id="go" type="submit">Check badge</button>
+  </form>
+
+  <div id="result" role="status" aria-live="polite"></div>
+</main>
+
+<footer><div class="wrap">
+  Badges follow the <a href="https://www.imsglobal.org/spec/ob/v2p0/">Open Badges 2.0</a> standard.
+  <a href="about.html">How this check works</a>.
+</div></footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CODE_RE = /^BEARS-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+
+async function sha256hex(text){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+}
+async function getJSON(path){
+  const r = await fetch(path, {cache:"no-store"});
+  if (!r.ok) throw Object.assign(new Error("not found"), {status:r.status});
+  return r.json();
+}
+function show(kind, title, body){
+  $("#result").innerHTML = `<div class="card ${kind}"><h2>${esc(title)}</h2>${body}</div>`;
+}
+function niceDate(iso){
+  const d = new Date(iso);
+  return isNaN(d) ? iso : d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+}
+
+// Prefill the code if the link includes ?code=
+const pre = new URLSearchParams(location.search).get("code");
+if (pre) $("#code").value = pre.toUpperCase();
+
+$("#f").addEventListener("submit", async e => {
+  e.preventDefault();
+  const code = $("#code").value.trim().toUpperCase().replace(/\s+/g,"");
+  const email = $("#email").value.trim().toLowerCase();
+  if (!CODE_RE.test(code)) return show("no","Check the code format","<p>Badge codes look like BEARS-7KQ4-M2XP: the word BEARS, then two groups of four letters or numbers.</p>");
+  if (!email.includes("@")) return show("no","Add the student's email","<p>Enter the email the student used in the course.</p>");
+
+  $("#go").disabled = true; $("#result").innerHTML = "<p>Checking…</p>";
+  try {
+    let a;
+    try { a = await getJSON(`assertions/${code}.json`); }
+    catch { return show("no","No badge found",`<p>There is no badge with the code <strong>${esc(code)}</strong>. Check the code for typos, or ask the student to copy it again.</p>`); }
+
+    if (a.revoked) return show("no","This badge was revoked",`<p>The badge with code ${esc(code)} is no longer valid.</p>`);
+
+    const hash = "sha256$" + await sha256hex(email + (a.recipient.salt || ""));
+    if (hash !== a.recipient.identity)
+      return show("no","Email does not match",`<p>The code <strong>${esc(code)}</strong> is real, but it was not issued to that email. Check the spelling of the email, or ask the student which email they used in the course.</p>`);
+
+    const badge = await getJSON("badge.json");
+    const issuer = await getJSON("issuer.json");
+    show("ok","Verified", `<p>This student earned the badge.</p>
+      <dl><dt>Badge</dt><dd>${esc(badge.name)}</dd>
+      <dt>Issued by</dt><dd>${esc(issuer.name)}</dd>
+      <dt>Issued on</dt><dd>${esc(niceDate(a.issuedOn))}</dd>
+      <dt>Code</dt><dd>${esc(code)}</dd></dl>`);
+  } catch(err) {
+    show("no","The check could not finish","<p>The badge records did not load. Check your internet connection and try again.</p>");
+  } finally { $("#go").disabled = false; }
+});
+</script>
+</body>
+</html>

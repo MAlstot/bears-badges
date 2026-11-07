@@ -1,0 +1,19 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Assertion",
+  "id": "https://malstot.github.io/bears-badges/assertions/BEARS-C8EA-ZZNX.json",
+  "recipient": {
+    "type": "email",
+    "hashed": true,
+    "salt": "11ddbd86c27a8a8a",
+    "identity": "sha256$9b1a0d23654ed83b160da8169a56014a177f286528f8668864f85604a986d482"
+  },
+  "badge": "https://malstot.github.io/bears-badges/badge.json",
+  "verification": {
+    "type": "hosted"
+  },
+  "issuedOn": "2026-11-05T15:00:00Z",
+  "image": "https://malstot.github.io/bears-badges/images/baked/BEARS-C8EA-ZZNX.svg",
+  "revoked": true,
+  "revocationReason": "Demo of a revoked badge"
+}

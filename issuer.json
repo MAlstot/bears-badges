@@ -1,0 +1,8 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Issuer",
+  "id": "https://malstot.github.io/bears-badges/issuer.json",
+  "name": "Academy for Teaching and Learning, Baylor University",
+  "url": "https://www.baylor.edu/atl/",
+  "description": "Issuer of the BEARS AI Basics digital badge (proof of concept)."
+}

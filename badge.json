@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "BadgeClass",
+  "id": "https://malstot.github.io/bears-badges/badge.json",
+  "name": "BEARS AI Basics",
+  "description": "Awarded to Baylor undergraduates who complete The BEARS AI Basics, an AI literacy microcourse.",
+  "image": "https://malstot.github.io/bears-badges/images/bears-badge.svg",
+  "criteria": {
+    "narrative": "Complete all required modules of The BEARS AI Basics in Canvas. (Placeholder criteria for the proof of concept.)"
+  },
+  "issuer": "https://malstot.github.io/bears-badges/issuer.json",
+  "tags": [
+    "AI literacy",
+    "Baylor",
+    "BEARS"
+  ]
+}

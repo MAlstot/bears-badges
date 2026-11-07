@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:openbadges="http://openbadges.org" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="t d">
+<openbadges:assertion verify="https://malstot.github.io/bears-badges/assertions/BEARS-C8EA-ZZNX.json"/>
+<title id="t">BEARS AI Basics badge</title>
+<desc id="d">A green hexagon with a gold border. Gold text reads BEARS, white text reads AI Basics, and a small line reads Academy for Teaching and Learning, Baylor University. Placeholder art.</desc>
+<defs>
+  <path id="arcTop" d="M 92 200 A 108 108 0 0 1 308 200"/>
+  <path id="arcBot" d="M 80 205 A 120 120 0 0 0 320 205"/>
+</defs>
+<polygon points="200,14 361,107 361,293 200,386 39,293 39,107" fill="#FFB81C"/>
+<polygon points="200,34 344,117 344,283 200,366 56,283 56,117" fill="#154734"/>
+<polygon points="200,52 328,126 328,274 200,348 72,274 72,126" fill="none" stroke="#FFB81C" stroke-width="2" opacity="0.6"/>
+<text font-family="Georgia, 'Times New Roman', serif" font-size="74" font-weight="700" fill="#FFB81C" text-anchor="middle" x="200" y="205" letter-spacing="4">BEARS</text>
+<rect x="128" y="222" width="144" height="3" fill="#FFB81C"/>
+<text font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#FFFFFF" text-anchor="middle" x="200" y="265">AI Basics</text>
+<text font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#FFFFFF" text-anchor="middle" x="200" y="300">Academy for Teaching and Learning</text>
+<text font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#FFFFFF" text-anchor="middle" x="200" y="316">Baylor University</text>
+</svg>
