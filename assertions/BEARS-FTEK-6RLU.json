@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Assertion",
+  "id": "https://malstot.github.io/bears-badges/assertions/BEARS-FTEK-6RLU.json",
+  "recipient": {
+    "type": "email",
+    "hashed": true,
+    "salt": "f98eb7f91a8a249a",
+    "identity": "sha256$b265a785e4f4c27ae70514bd3143cfb0573f54b048d3762edcbc970ce6ecb57a"
+  },
+  "badge": "https://malstot.github.io/bears-badges/badge.json",
+  "verification": {
+    "type": "hosted"
+  },
+  "issuedOn": "2026-08-27T12:00:00Z",
+  "image": "https://malstot.github.io/bears-badges/images/baked/BEARS-FTEK-6RLU.svg"
+}

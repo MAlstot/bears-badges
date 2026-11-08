@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Assertion",
+  "id": "https://malstot.github.io/bears-badges/assertions/BEARS-5Y3M-ZAVT.json",
+  "recipient": {
+    "type": "email",
+    "hashed": true,
+    "salt": "c156ec1255730609",
+    "identity": "sha256$fc2e1c8f8f6abf55124d70a5146d7fc4601cfad88929aa64a74e5d57af031ab5"
+  },
+  "badge": "https://malstot.github.io/bears-badges/badge.json",
+  "verification": {
+    "type": "hosted"
+  },
+  "issuedOn": "2026-08-30T12:00:00Z",
+  "image": "https://malstot.github.io/bears-badges/images/baked/BEARS-5Y3M-ZAVT.svg"
+}

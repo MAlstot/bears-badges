@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Assertion",
+  "id": "https://malstot.github.io/bears-badges/assertions/BEARS-4PXD-JSWX.json",
+  "recipient": {
+    "type": "email",
+    "hashed": true,
+    "salt": "4e9cf28c3d3fcdd8",
+    "identity": "sha256$9ae4b6adf14ec6111454f6e5ab535a773e3043aacbf5f678e10d06531e92d538"
+  },
+  "badge": "https://malstot.github.io/bears-badges/badge.json",
+  "verification": {
+    "type": "hosted"
+  },
+  "issuedOn": "2026-10-06T12:00:00Z",
+  "image": "https://malstot.github.io/bears-badges/images/baked/BEARS-4PXD-JSWX.svg"
+}

@@ -24,8 +24,20 @@ Also try a real code with the wrong email, and a made-up code like BEARS-AAAA-BB
 
 ## Files
 
-- `index.html`: the checker professors use
+- `index.html`: the checker professors use. A student's link checks itself: `?code=BEARS-XXXX-XXXX#email=student@example.edu`
 - `about.html`: one-page overview for IT
 - `issuer.json`, `badge.json`, `assertions/`: the Open Badges records
 - `images/bears-badge.svg`: placeholder art; `images/baked/`: each student's badge with their record link built in
-- `tools/make_badges.py`: makes the records from a roster (the roster itself is never uploaded)
+- `tools/make_badges.py`: makes the records from a roster
+
+## How the script works
+
+The roster is a CSV with two columns, `email` and `completed_on` (blank means not finished). The roster and the delivery list are private and never go in this repo.
+
+```
+BADGE_SECRET=<long random text> python3 tools/make_badges.py roster.csv --delivery private/delivery.csv
+```
+
+- The same student always gets the same code, so the script is safe to run every night. It only adds new completers.
+- `BADGE_SECRET` must stay private (a GitHub secret in the real setup). If it leaks, someone could work out which code belongs to which email.
+- Tested with 3,765 synthetic students over two simulated nights: 2,283 badges, then 144 new ones, with no email in any public file.

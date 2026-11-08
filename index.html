@@ -56,7 +56,7 @@
 
 <main class="wrap">
   <p class="demo"><strong>Proof of concept.</strong> This page uses fake students only.</p>
-  <p class="intro">Ask the student for their badge code and the email they used in the course. Both must match for the badge to check out.</p>
+  <p class="intro">Most students will send you a link that checks their badge automatically. If you only have a code, enter it with the student's email below.</p>
 
   <form id="f" novalidate>
     <label for="code">Badge code <span class="hint">looks like BEARS-7KQ4-M2XP</span></label>
@@ -97,8 +97,12 @@ function niceDate(iso){
 }
 
 // Prefill the code if the link includes ?code=
-const pre = new URLSearchParams(location.search).get("code");
+const qs = new URLSearchParams(location.search);
+const hs = new URLSearchParams(location.hash.slice(1));
+const pre = qs.get("code") || hs.get("code"), preEmail = hs.get("email") || qs.get("email");
 if (pre) $("#code").value = pre.toUpperCase();
+if (preEmail) $("#email").value = preEmail;
+if (pre && preEmail) setTimeout(() => $("#f").requestSubmit(), 0);
 
 $("#f").addEventListener("submit", async e => {
   e.preventDefault();
@@ -125,7 +129,9 @@ $("#f").addEventListener("submit", async e => {
       <dl><dt>Badge</dt><dd>${esc(badge.name)}</dd>
       <dt>Issued by</dt><dd>${esc(issuer.name)}</dd>
       <dt>Issued on</dt><dd>${esc(niceDate(a.issuedOn))}</dd>
-      <dt>Code</dt><dd>${esc(code)}</dd></dl>`);
+      <dt>Code</dt><dd>${esc(code)}</dd>
+      <dt>Earned by</dt><dd>${esc(email)}</dd></dl>
+      <p>Check that this email belongs to your student.</p>`);
   } catch(err) {
     show("no","The check could not finish","<p>The badge records did not load. Check your internet connection and try again.</p>");
   } finally { $("#go").disabled = false; }

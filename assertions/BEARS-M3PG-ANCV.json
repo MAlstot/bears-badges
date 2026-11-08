@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "type": "Assertion",
+  "id": "https://malstot.github.io/bears-badges/assertions/BEARS-M3PG-ANCV.json",
+  "recipient": {
+    "type": "email",
+    "hashed": true,
+    "salt": "d9f8cf7a40a6ccc9",
+    "identity": "sha256$69a0912354cd05fdf5c8268fc2fc479ce1ce004808798606dcc155a2e96ed1e8"
+  },
+  "badge": "https://malstot.github.io/bears-badges/badge.json",
+  "verification": {
+    "type": "hosted"
+  },
+  "issuedOn": "2026-09-29T12:00:00Z",
+  "image": "https://malstot.github.io/bears-badges/images/baked/BEARS-M3PG-ANCV.svg"
+}
